@@ -38,6 +38,25 @@ def show_student_info(student_info):
     print("姓名".center(8),"年龄".center(4),"成绩".center(4))
     for info in student_info:
         print(info.get("name").center(10),str(info.get("age")).center(4),str(info.get("score")).center(6))
+def del_student_info(student_info,del_name=''):
+    if not del_name:
+        del_name = input("请输入要删除的学生的姓名：")
+    for info in student_info:
+        if del_name == info.get("name"):
+            return info
+    return IndexError("没有找到%s！"%del_name)
+def mod_student_info(student_info):
+    mod_name = input("请输入要修改的学生姓名：")
+    for info in student_info:
+        if mod_name == info.get("name"):
+            a = int(input("请输入年龄："))
+            b = int(input("请输入成绩："))
+            info = {"name":mod_name,"age":a,"score":b}
+            return info
+    return IndexError("没有找到%s!"%mod_name)
+
+
+
 def main():
     student_info = []
     while True:
@@ -47,8 +66,20 @@ def main():
             student_info = add_student_info()
         elif number == '2':
             show_student_info(student_info)
+        elif number == '3':
+            try:
+                student_info.remove(del_student_info(student_info))
+            except Exception as e:
+                print(e)
+        elif number == '4':
+            try:
+                student = mod_student_info(student_info)
+            except Exception as e:
+                print(e)
+            else:
+                student_info.remove(del_student_info(student_info,del_name = student.get("name")))
+                student_info.append(student)
         else:
             break
         input("回车显示菜单！")
 main()
-
