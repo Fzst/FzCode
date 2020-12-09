@@ -14,6 +14,13 @@ def meun():
 ＋－－－－－－－－－－－－－－－－－－－－－－＋
 '''
     print(menu_info)
+def get_age(*l):
+    for x in l:
+        return x.get("age")
+def get_score(*l):
+    for x in l:
+        return x.get("score")
+
 def add_student_info():
     L = []
     while True:
@@ -31,6 +38,7 @@ def add_student_info():
         L.append(info)
     print("学生信息输入完毕！")
     return L
+
 def show_student_info(student_info):
     if not student_info:
         print("无学生信息！")
@@ -38,6 +46,7 @@ def show_student_info(student_info):
     print("姓名".center(8),"年龄".center(4),"成绩".center(4))
     for info in student_info:
         print(info.get("name").center(10),str(info.get("age")).center(4),str(info.get("score")).center(6))
+
 def del_student_info(student_info,del_name=''):
     if not del_name:
         del_name = input("请输入要删除的学生的姓名：")
@@ -45,6 +54,7 @@ def del_student_info(student_info,del_name=''):
         if del_name == info.get("name"):
             return info
     return IndexError("没有找到%s！"%del_name)
+
 def mod_student_info(student_info):
     mod_name = input("请输入要修改的学生姓名：")
     for info in student_info:
@@ -55,6 +65,25 @@ def mod_student_info(student_info):
             return info
     return IndexError("没有找到%s!"%mod_name)
 
+def score_reduce(student_info):
+    print("按照学生成绩由高到低显示信息：")
+    min = sorted(student_info,key = get_score,reverse=True)
+    show_student_info(min)
+
+def score_rise(student_info):
+    print("按照学生成绩由低到高显示信息：")
+    max = sorted(student_info,key = get_score)
+    show_student_info(max)
+
+def age_reduce(student_info):
+    print("按照年龄由高到低显示信息：")
+    min = sorted(student_info,key = get_age,reverse=True)
+    show_student_info(min)
+
+def age_rise(student_info):
+    print("按照年龄由低到高显示信息：")
+    max = sorted(student_info,key = get_age)
+    show_student_info(max)
 
 
 def main():
@@ -79,7 +108,17 @@ def main():
             else:
                 student_info.remove(del_student_info(student_info,del_name = student.get("name")))
                 student_info.append(student)
+        elif number == '5':
+            score_reduce(student_info)
+        elif number == '6':
+            score_rise(student_info)
+        elif number == '7':
+            age_reduce(student_info)
+        elif number == '8':
+            age_rise(student_info)
+
         else:
             break
         input("回车显示菜单！")
 main()
+
