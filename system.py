@@ -85,6 +85,50 @@ def age_rise(student_info):
     max = sorted(student_info,key = get_age)
     show_student_info(max)
 
+def save_info(student_info):
+    try:
+        students_txt = open("e:\\PYTHON\\python.txt","w")
+    except Exception as e:
+        students_txt = open("e\\PYTHON\\python.txt","x")
+    for info in student_info:
+        students_txt.write(str(info) + "\n")
+    students_txt.close()
+
+def read_info():
+    old_info = []
+    try:
+        students_txt = open("e:\\PYTHON\\python.txt","r")
+    except:
+        print("暂未保存数据信息")                       # 打开失败，文件不存在说明没有数据保存
+        return
+    while True:
+        info = students_txt.readline()
+        if not info:
+            break
+        # print(info)
+        info = info.rstrip()    #　去掉换行符
+        # print(info)
+        info = info[1:-1]       # 去掉｛｝
+        # print(info)
+        student_dict = {}       # 单个学生字典信息
+        for x in info.split(","):   # 以，为间隔拆分
+            # print(x)
+            key_value = []      # 开辟空间，key_value[0]存key,key_value[0]存value
+            for k in x.split(":"):  # 以：为间隔拆分
+                k = k.strip()       #　去掉首尾空字符
+                # print(k)
+                if k[0] == k[-1] and len(k) > 2:        # 判断是字符串还是整数
+                    key_value.append(k[1:-1])           # 去掉　首尾的＇
+                else:
+                    key_value.append(int(k))
+                # print(key_value)
+            student_dict[key_value[0]] = key_value[1]   # 学生信息添加
+        # print(student_dict)
+        old_info.append(student_dict)   # 所有学生信息汇总
+    students_txt.close()
+    return old_info
+
+
 
 def main():
     student_info = []
@@ -116,6 +160,10 @@ def main():
             age_reduce(student_info)
         elif number == '8':
             age_rise(student_info)
+        elif number == '9':
+            save_info(student_info)
+        elif number == '10':
+            student_info = read_info()
 
         else:
             break
