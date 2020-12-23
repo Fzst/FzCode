@@ -70,7 +70,7 @@ void left()
 {
   digitalWrite(Right_motor_go,HIGH);  // 右电机前进
   digitalWrite(Right_motor_back,LOW);
-  analogWrite(Right_motor_go,75); 
+  analogWrite(Right_motor_go,90); 
   analogWrite(Right_motor_back,0);//PWM比例0~255调速
   digitalWrite(Left_motor_go,LOW);   //左轮后退
   digitalWrite(Left_motor_back,LOW);
@@ -107,12 +107,12 @@ void spin_left(int time)         //左转(左轮后退，右轮前进)
 {
   digitalWrite(Right_motor_go,HIGH);  // 右电机前进
   digitalWrite(Right_motor_back,LOW);
-  analogWrite(Right_motor_go,72); 
+  analogWrite(Right_motor_go,100); 
   analogWrite(Right_motor_back,0);//PWM比例0~255调速
   digitalWrite(Left_motor_go,LOW);   //左轮后退
   digitalWrite(Left_motor_back,HIGH);
   analogWrite(Left_motor_go,0); 
-  analogWrite(Left_motor_back,63);//PWM比例0~255调速
+  analogWrite(Left_motor_back,100);//PWM比例0~255调速
   delay(time * 100);  //执行时间，可以调整  
 }
 
@@ -125,7 +125,7 @@ void right()
   analogWrite(Right_motor_back,0);//PWM比例0~255调速
   digitalWrite(Left_motor_go,HIGH);//左电机前进
   digitalWrite(Left_motor_back,LOW);
-  analogWrite(Left_motor_go,63); 
+  analogWrite(Left_motor_go,90); 
   analogWrite(Left_motor_back,0);//PWM比例0~255调速
   //delay(time * 100);  //执行时间，可以调整  
 }
@@ -147,10 +147,10 @@ void spin_right(int time)        //右转(右轮后退，左轮前进)
   digitalWrite(Right_motor_go,LOW);   //右电机后退
   digitalWrite(Right_motor_back,HIGH);
   analogWrite(Right_motor_go,0); 
-  analogWrite(Right_motor_back,74);//PWM比例0~255调速
+  analogWrite(Right_motor_back,100);//PWM比例0~255调速
   digitalWrite(Left_motor_go,HIGH);//左电机前进
   digitalWrite(Left_motor_back,LOW);
-  analogWrite(Left_motor_go,65); 
+  analogWrite(Left_motor_go,100); 
   analogWrite(Left_motor_back,0);//PWM比例0~255调速
   delay(time * 100);  //执行时间，可以调整    
 }
@@ -247,8 +247,9 @@ void tracking()
   SR = digitalRead(SensorRight);//有信号表明在白色区域，车子底板上L3亮；没信号表明压在黑线上，车子底板上L3灭
   SL = digitalRead(SensorLeft);//有信号表明在白色区域，车子底板上L2亮；没信号表明压在黑线上，车子底板上L2灭
 
-  if (SL == LOW&&SR==LOW)
+  if (SL == LOW&&SR==LOW){
     run(); //调用前进函数
+    }
   else if (SL == HIGH && SR == LOW){// 左循迹红外传感器,检测到信号，车子向右偏离轨道，向左转 
     left();
     break;}
@@ -277,16 +278,16 @@ void loop(){
         spin_left(20);//旋转掉头
       else if(Left_Distance > Right_Distance)//左边比右边空旷
       {      
-        spin_left(13);//左转
+        spin_left(5);//左转
         brake();//刹车，稳定方向
       }
       else if(Left_Distance < Right_Distance)//右边比左边空旷
       {
-        spin_right(13);//右转
+        spin_right(5);//右转
         brake();//刹车，稳定方向
       }
       else {
-        spin_right(13);
+        spin_right(5);
         brake();
       }
     }
