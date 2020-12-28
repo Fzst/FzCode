@@ -59,7 +59,7 @@ void brake()  //刹车，停车
   digitalWrite(Right_motor_back,LOW);
   digitalWrite(Left_motor_go,LOW);
   digitalWrite(Left_motor_back,LOW);
-  delay(1000);//执行时间，可以调整  
+  delay(100);//执行时间，可以调整  
 }
 
 void run()
@@ -90,13 +90,13 @@ void spin_left()         //左转(左轮后退，右轮前进) 左旋转
 {
   digitalWrite(Right_motor_go,HIGH);  // 右电机前进
   digitalWrite(Right_motor_back,LOW);
-  analogWrite(Right_motor_go,speedd+50); 
+  analogWrite(Right_motor_go,speedd+34); 
   analogWrite(Right_motor_back,0);//PWM比例0~255调速
   digitalWrite(Left_motor_go,LOW);   
   digitalWrite(Left_motor_back,LOW);
   analogWrite(Left_motor_go,0); 
   analogWrite(Left_motor_back,0);//PWM比例0~255调速
-  delay(790);  //执行时间，可以调整  
+  delay(750);  //执行时间，可以调整  
 }
 void xuanzhuan()         //左转(左轮后退，右轮前进) 左旋转
 {
@@ -108,7 +108,7 @@ void xuanzhuan()         //左转(左轮后退，右轮前进) 左旋转
   digitalWrite(Left_motor_back,HIGH);
   analogWrite(Left_motor_go,0); 
   analogWrite(Left_motor_back,speedd+31);//PWM比例0~255调速
-  delay(900);  //执行时间，可以调整  
+  delay(840);  //执行时间，可以调整  
 }
 
 void right()        //右转(右轮不动，左轮前进)
@@ -130,7 +130,7 @@ void spin_right()        //右转(右轮后退，左轮前进)右旋转
   analogWrite(Right_motor_go,0); 
   digitalWrite(Left_motor_go,HIGH);//左电机前进
   digitalWrite(Left_motor_back,LOW);
-  analogWrite(Left_motor_go,speedd+31); 
+  analogWrite(Left_motor_go,speedd+21); 
   analogWrite(Left_motor_back,0);//PWM比例0~255调速
   delay(850);  //执行时间，可以调整    
 }
@@ -139,12 +139,12 @@ void back()
   digitalWrite(Right_motor_go,LOW);  // 右电机前进
   digitalWrite(Right_motor_back,HIGH);     
   analogWrite(Right_motor_go,0);//PWM比例0~255调速，左右轮差异略增减
-  analogWrite(Right_motor_back,speedd+30);
+  analogWrite(Right_motor_back,speedd+20);
   digitalWrite(Left_motor_go,LOW);  // 左电机前进
   digitalWrite(Left_motor_back,HIGH);
   analogWrite(Left_motor_go,0);//PWM比例0~255调速，左右轮差异略增减 150
-  analogWrite(Left_motor_back,speedd+31); 
-  delay(200);
+  analogWrite(Left_motor_back,speedd+21); 
+  delay(130);
   
 }
 void spin_right1()        //右转(右轮后退，左轮前进)右旋转
@@ -159,18 +159,7 @@ void spin_right1()        //右转(右轮后退，左轮前进)右旋转
   analogWrite(Left_motor_back,0);//PWM比例0~255调速
   delay(850);  //执行时间，可以调整    
 }
-void back(int time)
-{
-  digitalWrite(Right_motor_go,LOW);  //右轮后退
-  digitalWrite(Right_motor_back,HIGH);
-  analogWrite(Right_motor_go,0);
-  analogWrite(Right_motor_back,150);//PWM比例0~255调速
-  digitalWrite(Left_motor_go,LOW);  //左轮后退
-  digitalWrite(Left_motor_back,HIGH);
-  analogWrite(Left_motor_go,0);
-  analogWrite(Left_motor_back,150);//PWM比例0~255调速
-  delay(time * 100);     //执行时间，可以调整  
-}
+
 
 void servopulse(int servopin,int myangle)/*定义一个脉冲函数，用来模拟方式产生PWM值*/
 {
@@ -188,7 +177,7 @@ void front_detection()
   {
     servopulse(servopin,50);//模拟产生PWM
   }
-  delay(100);
+  delay(10);
   Front_Distance = Distance_test();
 }
 
@@ -198,7 +187,7 @@ void left_detection()
   {
     servopulse(servopin,180);//模拟产生PWM
   }
-  delay(100);
+  delay(10);
   Left_Distance = Distance_test();
 }
 
@@ -208,7 +197,7 @@ void right_detection()
   {
     servopulse(servopin,12);//模拟产生PWM
   }
-  delay(100);
+  delay(10);
   Right_Distance = Distance_test();
 }
 
@@ -298,20 +287,20 @@ void tracking2(){
 void loop()
 { 
     left_detection();//测量左边距障碍物距离
-    delay(100);
-    Distance_display(Left_Distance);//液晶屏显示距离
-    delay(100);
+    delay(10);
+    //Distance_display(Left_Distance);//液晶屏显示距离
+    //delay(10);
     front_detection();//测量前边距障碍物距离
-    delay(100);
-    Distance_display(Front_Distance);//液晶屏显示距离
-    delay(100);
+    delay(10);
+    //Distance_display(Front_Distance);//液晶屏显示距离
+    //delay(10);
     right_detection();//测量右边距障碍物距离
-    delay(100);
-    Distance_display(Right_Distance);//液晶屏显示距离
-    delay(100);
+    delay(10);
+    //Distance_display(Right_Distance);//液晶屏显示距离
+    //delay(50);
     //前进道路
-    if(Front_Distance > 20 & Left_Distance < 20 & Right_Distance < 20)  {  
-       tracking1((Front_Distance/40.0)*MAX);
+    if(Front_Distance > 20 & Left_Distance < 20 & Right_Distance < 20){  
+       tracking1((Front_Distance/25.0)*MAX);
        brake();
       }
       //十字路口
@@ -324,8 +313,8 @@ void loop()
          brake();
         }
         else{
-       // tracking1((Front_Distance/50.0)*MAX);
-       tracking11();
+        tracking1((Front_Distance/25.0)*MAX);
+       //tracking11();
         brake();
         }
         }
@@ -336,7 +325,7 @@ void loop()
             brake();
           }
           //死路
-          else if(Front_Distance <= 12 & Left_Distance <= 12 & Right_Distance <= 12){
+          else if(Front_Distance <= 20 & Left_Distance <= 12 & Right_Distance <= 12){
               xuanzhuan();
               brake();
             }
@@ -344,19 +333,24 @@ void loop()
             else if(Front_Distance <= 14 & Left_Distance > 30 & Right_Distance <= 16){
             spin_left();
             tracking2();
+            flag = 0;
             brake();
             }
             //丁字路口
             else if(Front_Distance <= 16 & Left_Distance > 30 & Right_Distance > 15){
+              back();
               spin_right();
               tracking2();
               brake();
               }
               //未知路口
             else{
-              tracking1((Front_Distance/40.0)*MAX);
+              if(flag)
+                back();
+              tracking1((Front_Distance/25.0)*MAX);
               brake();
             }
+      
        
             
 }
